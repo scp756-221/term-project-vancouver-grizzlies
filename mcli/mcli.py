@@ -25,9 +25,14 @@ def parse_args():
         help="DNS name or IP address of music server"
         )
     argp.add_argument(
-        'port',
+        'music_port',
         type=int,
         help="Port number of music server"
+        )
+    argp.add_argument(
+        'playlist_port',
+        type=int,
+        help="Port number of playlist server"
         )
     return argp.parse_args()
 
@@ -51,7 +56,8 @@ def parse_quoted_strings(arg):
 class Mcli(cmd.Cmd):
     def __init__(self, args):
         self.name = args.name
-        self.port = args.port
+        self.music_port = args.music_port
+        self.playlist_port = args.playlist_port
         cmd.Cmd.__init__(self)
         self.prompt = 'mql: '
         self.intro = """
@@ -83,7 +89,7 @@ Enter 'help' for command list.
         all songs and will instead return an empty list if
         no parameter is provided.
         """
-        url = get_url(self.name, self.port)
+        url = get_url(self.name, self.music_port)
         r = requests.get(
             url+arg.strip(),
             headers={'Authorization': DEFAULT_AUTH}
@@ -120,7 +126,7 @@ Enter 'help' for command list.
         create Chumbawamba Tubthumping
             No quotes needed for single-word artist or title name.
         """
-        url = get_url(self.name, self.port)
+        url = get_url(self.name, self.music_port)
         args = parse_quoted_strings(arg)
         payload = {
             'Artist': args[0],
@@ -147,7 +153,7 @@ Enter 'help' for command list.
         delete 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea
             Delete "The Last Great American Dynasty".
         """
-        url = get_url(self.name, self.port)
+        url = get_url(self.name, self.music_port)
         r = requests.delete(
             url+arg.strip(),
             headers={'Authorization': DEFAULT_AUTH}
@@ -165,7 +171,7 @@ Enter 'help' for command list.
         """
         Run a test stub on the music server.
         """
-        url = get_url(self.name, self.port)
+        url = get_url(self.name, self.music_port)
         r = requests.get(
             url+'test',
             headers={'Authorization': DEFAULT_AUTH}
@@ -177,7 +183,7 @@ Enter 'help' for command list.
         """
         Tell the music cerver to shut down.
         """
-        url = get_url(self.name, self.port)
+        url = get_url(self.name, self.music_port)
         r = requests.get(
             url+'shutdown',
             headers={'Authorization': DEFAULT_AUTH}
@@ -185,6 +191,101 @@ Enter 'help' for command list.
         if r.status_code != 200:
             print("Non-successful status code:", r.status_code)
 
+    def do_createplaylist(self, arg):
+        """
+        Create a new playlist, and add default songs to the this list.
+        
+        Parameters
+        ----------
+        PlayListName: string
+            The name of the new playlist.
+        Content: array
+            A List of music strings.
+        """
+        url = get_url(self.name, self.playlist_port)
+        args = parse_quoted_strings(arg)
+        payload = {
+            'PlayListName': args[0],
+            'Content': [x for x in args[1:]],
+        }
+        r = requests.post(
+            url,
+            json=payload,
+            headers={'Authorization': DEFAULT_AUTH}
+        )
+        print(r.json())
+        if r.status_code != 200:
+            print("Non-successful status code:", r.status_code)
+
+    def do_readplaylist(self, arg):
+        """
+        Read a playlist and display its content (PlayListName name and its musics).
+
+        Parameters
+        ----------
+        playlist_id: int
+            The playlist_id of the playlist to read.
+        """
+        url = get_url(self.name, self.playlist_port)
+        r = requests.get(
+            url+arg.strip(),
+            headers={'Authorization': DEFAULT_AUTH}
+            )
+        if r.status_code != 200:
+            print("Non-successful status code:", r.status_code)
+        items = r.json()
+        if 'Count' not in items:
+            print("0 items returned")
+            return
+        print("{} items returned".format(items['Count']))
+        for i in items['Items']:
+            print("{}  {:20.20s} {}".format(
+                i['playlist_id'],
+                i['PlayListName'],
+                i['Content']))
+
+        def do_updateplaylist(self, arg):
+            """
+            Update the name of a playlist.
+
+            Parameters
+            ----------
+            playlist_id: int
+                The playlist_id of the playlist to update.
+            PlayListName: PlayListName
+                The new name of the target song.
+            """
+            url = get_url(self.name, self.playlist_port)
+            args = parse_quoted_strings(arg)
+            payload = {
+                'playlist_id': args[0],
+                'PlayListName': args[1]
+            }
+            r = requests.put(
+                url,
+                json=payload,
+                headers={'Authorization': DEFAULT_AUTH}
+            )
+            print(r.json())
+            if r.status_code != 200:
+                print("Non-successful status code:", r.status_code)
+
+        def do_deleteplaylist(self, arg):
+            """
+            Delete a playlist.
+
+            Parameters
+            ----------
+            playlist_id: int
+                The playlist_id of the playlist to delete.
+            """
+            url = get_url(self.name, self.playlist_port)
+            r = requests.delete(
+                url+arg.strip(),
+                headers={'Authorization': DEFAULT_AUTH}
+                )
+            if r.status_code != 200:
+                print("Non-successful status code:", r.status_code)
 
 if __name__ == '__main__':
     args = parse_args()
