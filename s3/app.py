@@ -76,16 +76,16 @@ def create_playlist():
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-# @bp.route('/', methods=['GET'])
-# def list_all_playlists():
-#     headers = request.headers
-#     # check header here
-#     if 'Authorization' not in headers:
-#         return Response(json.dumps({"error": "missing auth"}),
-#                         status=401,
-#                         mimetype='application/json')
-#     # list all songs here
-#     return {}
+@bp.route('/', methods=['GET'])
+def list_all_playlists():
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    # list all songs here
+    return {}
 
 @bp.route('/<playlist_id>', methods=['GET'])
 def get_playlist(playlist_id):

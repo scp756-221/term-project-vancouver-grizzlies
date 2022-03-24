@@ -21,8 +21,12 @@ def parse_args():
         description='Command-line query interface to music service'
         )
     argp.add_argument(
-        'name',
+        'music_server',
         help="DNS name or IP address of music server"
+        )
+    argp.add_argument(
+        'playlist_server',
+        help="DNS name or IP address of playlist server"
         )
     argp.add_argument(
         'music_port',
@@ -55,7 +59,8 @@ def parse_quoted_strings(arg):
 
 class Mcli(cmd.Cmd):
     def __init__(self, args):
-        self.name = args.name
+        self.music_server = args.music_server
+        self.playlist_server = args.playlist_server
         self.music_port = args.music_port
         self.playlist_port = args.playlist_port
         cmd.Cmd.__init__(self)
@@ -89,7 +94,7 @@ Enter 'help' for command list.
         all songs and will instead return an empty list if
         no parameter is provided.
         """
-        url = get_url(self.name, self.music_port)
+        url = get_url(self.music_server, self.music_port)
         r = requests.get(
             url+arg.strip(),
             headers={'Authorization': DEFAULT_AUTH}
@@ -126,7 +131,7 @@ Enter 'help' for command list.
         create Chumbawamba Tubthumping
             No quotes needed for single-word artist or title name.
         """
-        url = get_url(self.name, self.music_port)
+        url = get_url(self.music_server, self.music_port)
         args = parse_quoted_strings(arg)
         payload = {
             'Artist': args[0],
@@ -153,7 +158,7 @@ Enter 'help' for command list.
         delete 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea
             Delete "The Last Great American Dynasty".
         """
-        url = get_url(self.name, self.music_port)
+        url = get_url(self.music_server, self.music_port)
         r = requests.delete(
             url+arg.strip(),
             headers={'Authorization': DEFAULT_AUTH}
@@ -171,7 +176,7 @@ Enter 'help' for command list.
         """
         Run a test stub on the music server.
         """
-        url = get_url(self.name, self.music_port)
+        url = get_url(self.music_server, self.music_port)
         r = requests.get(
             url+'test',
             headers={'Authorization': DEFAULT_AUTH}
@@ -183,7 +188,7 @@ Enter 'help' for command list.
         """
         Tell the music cerver to shut down.
         """
-        url = get_url(self.name, self.music_port)
+        url = get_url(self.music_server, self.music_port)
         r = requests.get(
             url+'shutdown',
             headers={'Authorization': DEFAULT_AUTH}
@@ -202,7 +207,7 @@ Enter 'help' for command list.
         Content: array
             A List of music strings.
         """
-        url = get_url(self.name, self.playlist_port)
+        url = get_url(self.playlist_server, self.playlist_port)
         args = parse_quoted_strings(arg)
         payload = {
             'PlayListName': args[0],
@@ -226,7 +231,7 @@ Enter 'help' for command list.
         playlist_id: int
             The playlist_id of the playlist to read.
         """
-        url = get_url(self.name, self.playlist_port)
+        url = get_url(self.playlist_server, self.playlist_port)
         r = requests.get(
             url+arg.strip(),
             headers={'Authorization': DEFAULT_AUTH}
@@ -255,7 +260,7 @@ Enter 'help' for command list.
             PlayListName: PlayListName
                 The new name of the target song.
             """
-            url = get_url(self.name, self.playlist_port)
+            url = get_url(self.playlist_server, self.playlist_port)
             args = parse_quoted_strings(arg)
             payload = {
                 'playlist_id': args[0],
@@ -279,7 +284,7 @@ Enter 'help' for command list.
             playlist_id: int
                 The playlist_id of the playlist to delete.
             """
-            url = get_url(self.name, self.playlist_port)
+            url = get_url(self.playlist_server, self.playlist_port)
             r = requests.delete(
                 url+arg.strip(),
                 headers={'Authorization': DEFAULT_AUTH}
