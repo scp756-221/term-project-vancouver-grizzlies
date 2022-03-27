@@ -4,7 +4,7 @@
       "tableMusic": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "Music-mogami95",
+          "TableName": "Music-vancouvergrizzlies",
           "AttributeDefinitions": [
             {
               "AttributeName": "music_id",
@@ -26,7 +26,7 @@
       "tableUsers": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "User-mogami95",
+          "TableName": "User-vancouvergrizzlies",
           "AttributeDefinitions": [
             {
               "AttributeName": "user_id",
@@ -36,6 +36,28 @@
           "KeySchema": [
             {
               "AttributeName": "user_id",
+              "KeyType": "HASH"
+            }
+          ],
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": "5",
+            "WriteCapacityUnits": "5"
+          }
+        }
+      },
+      "tablePlaylist": {
+        "Type": "AWS::DynamoDB::Table",
+        "Properties": {
+          "TableName": "Playlist-vancouvergrizzlies",
+          "AttributeDefinitions": [
+            {
+              "AttributeName": "playlist_id",
+              "AttributeType": "S"
+            }
+          ],
+          "KeySchema": [
+            {
+              "AttributeName": "playlist_id",
               "KeyType": "HASH"
             }
           ],

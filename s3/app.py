@@ -6,7 +6,6 @@ Sample application---user service.
 # Standard library modules
 import logging
 import sys
-import os
 import time
 
 # Installed packages
@@ -31,6 +30,7 @@ metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Playlist process')
 
 bp = Blueprint('app', __name__)
+
 db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
     "endpoint": [
@@ -40,7 +40,6 @@ db = {
         "update"
     ]
 }
-bp = Blueprint('app', __name__)
 
 
 @bp.route('/health')
@@ -145,11 +144,11 @@ def delete_playlist(playlist_id):
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/music/')
+app.register_blueprint(bp, url_prefix='/api/v1/playlist/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        logging.error("missing port arg 1")
+        logging.error("Usage: app.py <service-port>")
         sys.exit(-1)
 
     p = int(sys.argv[1])
