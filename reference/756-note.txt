@@ -1,0 +1,38 @@
+~/.kube/config
+~/.aws
+~/.ec2.mak
+~/.ssh/AWS-OR-CMPT756.pem
+cluster/ghcr.io-token.txt
+cluster/awscred.yaml
+project/*.mak
+https://github.com/scp756-221/term-project-vancouver-grizzlies/tree/main/gatling/resources
+============
+everything starts from cluster/k8s.mak
+grep -r "mogami" ./*
+grep -r "vancouver" ./*
+# eksctl delete cluster --region=us-west-2 --name=aws756
+make -f eks.mak start  # start the cluster on aws
+# https://scp756-221.github.io/course-site/#/a4/page?embedded=true&hidegitlink=true
+# set up the context and namespace
+kubectl config use-context aws756
+kubectl create ns c756ns
+kubectl config set-context aws756 --namespace=c756ns
+make -f eks.mak ls
+istioctl install -y --set profile=demo --set hub=gcr.io/istio-release
+kubectl label namespace c756ns istio-injection=enabled
+make -f k8s.mak cri  # https://github.com/mogami95?tab=packages
+make -f k8s.mak gw db s1 s2 s3  # start micro services
+make -f k8s.mak loader
+k9s
+kubectl get svc --all-namespaces | cut -c -150
+export EXTERNAL_IP="xxx.amazonaws.com"
+cd mcli
+make build-mcli
+make S2_SERVER=$EXTERNAL_IP S3_SERVER=$EXTERNAL_IP S2_PORT=80 S3_PORT=80 run-mcli
+read 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea
+readplaylist 49206bf0-ad4e-11ec-b909-0242ac120002
+# do sth
+make -f k8s.mak cri
+make -f k8s.mak rollout-s#
+# commit the changes
+make -f eks.mak stop  # ATTENTION
