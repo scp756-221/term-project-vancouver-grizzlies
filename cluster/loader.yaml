@@ -3,14 +3,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: cmpt756loader
+  name: vancouver-grizzlies-loader
   labels:
-    app: cmpt756loader
+    app: vancouver-grizzlies-loader
 spec:
   template:
     metadata:
       labels:
-        app: cmpt756loader
+        app: vancouver-grizzlies-loader
       annotations:
         sidecar.istio.io/inject: "false"
     spec:
@@ -19,7 +19,7 @@ spec:
       containers:
       - name: loader
         imagePullPolicy: Always
-        image: 'ghcr.io/mogami95/cmpt756loader:v1'
+        image: 'ghcr.io/scp756-221/vancouver-grizzlies-loader:v1'
         env:
         - name: SVC_LOADER_TOKEN
           valueFrom:

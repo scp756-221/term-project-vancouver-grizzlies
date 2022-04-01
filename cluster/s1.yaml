@@ -16,15 +16,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cmpt756s1
+  name: vancouver-grizzlies-s1
   labels:
-    app: cmpt756s1
+    app: vancouver-grizzlies-s1
 spec:
   ports:
   - port: 30000
     name: http
   selector:
-    app: cmpt756s1
+    app: vancouver-grizzlies-s1
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -36,27 +36,27 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s1
+  name: vancouver-grizzlies-s1
   labels:
-    app: cmpt756s1
+    app: vancouver-grizzlies-s1
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s1
+      app: vancouver-grizzlies-s1
       version: v1
   template:
     metadata:
       name: service1-pod
       labels:
-        app: cmpt756s1
+        app: vancouver-grizzlies-s1
         version: v1
     spec:
       serviceAccountName: svc-s1
       containers:
-      - name: cmpt756s1
-        image: 'ghcr.io/mogami95/cmpt756s1:v1'
+      - name: vancouver-grizzlies-s1
+        image: 'ghcr.io/scp756-221/vancouver-grizzlies-s1:v1'
         imagePullPolicy: Always
         ports:
         - containerPort: 30000

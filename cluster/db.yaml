@@ -16,15 +16,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cmpt756db
+  name: vancouver-grizzlies-db
   labels:
-    app: cmpt756db
+    app: vancouver-grizzlies-db
 spec:
   ports:
   - port: 30002
     name: http
   selector:
-    app: cmpt756db
+    app: vancouver-grizzlies-db
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -56,27 +56,27 @@ type: kubernetes.io/service-account-token
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756db
+  name: vancouver-grizzlies-db
   labels:
-    app: cmpt756db
+    app: vancouver-grizzlies-db
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756db
+      app: vancouver-grizzlies-db
       version: v1
   template:
     metadata:
       name: database-pod
       labels:
-        app: cmpt756db
+        app: vancouver-grizzlies-db
         version: v1
     spec:
       serviceAccountName: svc-db
       containers:
-      - name: cmpt756db
-        image: 'ghcr.io/mogami95/cmpt756db:v1'
+      - name: vancouver-grizzlies-db
+        image: 'ghcr.io/scp756-221/vancouver-grizzlies-db:v1'
         imagePullPolicy: Always
         env:
         - name: SVC_LOADER_TOKEN

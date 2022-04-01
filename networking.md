@@ -167,35 +167,35 @@ ServiceMonitor and apply it. The ServiceMonitor must
   system (currently `komplete-prometheus`, but likely to change)
 * Specify a `spec.namespaceSelector.matchNames` array with the single
   value of the namespace in which the service runs (typically
-  `cmpt756e4`)
+  `e4`)
 * Specify a `spec.selector.matchLabels.app` tag with the same label
-  given to the application (`cmpt756db`, `cmpt756s1`, ...)
+  given to the application (`dv`, `s1`, ...)
 * Specify a `spec.endpoints` array of elements with
   * `port` tag specifying the port name used by the service to be
      monitored
   * `path` tag set to `/metrics` (the path that Prometheus uses to
     request metrics)
 
-Example: A ServiceMonitor for the `cmpt756db` service
+Example: A ServiceMonitor for the `db` service
 
 ~~~
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cmpt756db
+  name: db
   labels:
-    app: cmpt756db
+    app: db
     release: komplete-prometheus
 spec:
   namespaceSelector:
     matchNames:
-    - cmpt756e4
+    - e4
 [adapter Prometheus stats -> Kubernetes stats for input to HorizontalAutoscaler](https://github.com/DirectXMan12/k8s-prometheus-adapter)
 The `kube-prometheus-stack` does *not* install this.
 
   selector:
     matchLabels:
-      app: cmpt756db
+      app: db
   endpoints:
   - port: http
     path: /metrics

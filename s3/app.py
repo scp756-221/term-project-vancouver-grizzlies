@@ -32,7 +32,7 @@ metrics.info('app_info', 'Playlist process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://cmpt756db:30002/api/v1/datastore",
+    "name": "http://vancouver-grizzlies-db:30002/api/v1/datastore",
     "endpoint": [
         "read",
         "write",

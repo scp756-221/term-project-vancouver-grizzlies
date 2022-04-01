@@ -21,11 +21,11 @@ LOG_DIR=logs
 # look these up with 'make ls'
 # You need to specify the container because istio injects side-car container
 # into each pod.
-# s1: service1; s2: service2; s3:service3 ;db: cmpt756db
+# s1: service1; s2: service2; s3:service3 ;db: servicedb
 PODS1=pod/cmpt756-team-vancouver-grizzlies
 PODCONT=service1
 
-# show deploy and pods in current ns; svc of cmpt756 ns
+# show deploy and pods in current ns; svc of c756ns
 ls: showcontext
 	$(KC) get gw,deployments,pods
 	$(KC) -n $(NS) get svc

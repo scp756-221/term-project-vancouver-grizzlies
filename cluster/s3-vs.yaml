@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: cmpt756s3
+  name: vancouver-grizzlies-s3
 spec:
   hosts:
   # We do not know the hostname of traffic from this gateway, so
@@ -18,6 +18,6 @@ spec:
       uri: /api/v1/playlist
     route:
     - destination:
-        host: cmpt756s3
+        host: vancouver-grizzlies-s3
         port:
           number: 30003

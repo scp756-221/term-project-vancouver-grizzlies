@@ -1,9 +1,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cmpt756s2
+  name: vancouver-grizzlies-s2
   labels:
-    app: cmpt756s2
+    app: vancouver-grizzlies-s2
     release: c756
 spec:
   namespaceSelector:
@@ -11,7 +11,7 @@ spec:
     - c756ns
   selector:
     matchLabels:
-      app: cmpt756s2
+      app: vancouver-grizzlies-s2
   endpoints:
   - port: http
     path: /metrics

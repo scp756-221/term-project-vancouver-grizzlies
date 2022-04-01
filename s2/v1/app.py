@@ -28,7 +28,7 @@ metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Music process')
 
 db = {
-    "name": "http://cmpt756db:30002/api/v1/datastore",
+    "name": "http://vancouver-grizzlies-db:30002/api/v1/datastore",
     "endpoint": [
         "read",
         "write",

@@ -1,14 +1,15 @@
-~/.kube/config
-~/.aws
+Never upload these files to github:
+cluster/awscred.yaml
 cluster/ghcr.io-token.txt
 
 ============
 
 everything starts from k8s.mak
-grep -r "c756ns"  ./*  #aws756
-grep -r "cmpt756" ./*
-grep -r "mogami"  ./*
-grep -r "vancouver" ./*
+grep -r "c756ns"  ./*
+grep -r "aws756" ./*
+grep -r "scp756-221" ./*
+grep -r "vancouvergrizzlies"  ./*
+grep -r "vancouver-grizzlies"  ./*
 
 ============
 
@@ -24,33 +25,38 @@ make -f eks.mak ls
 istioctl install -y --set profile=demo --set hub=gcr.io/istio-release
 kubectl label namespace c756ns istio-injection=enabled
 
-make -f k8s.mak cri  # https://github.com/mogami95?tab=packages
-make -f k8s.mak gw db s1 s2 s3  # start micro services
+make -f k8s.mak cri  # https://github.com/orgs/scp756-221/packages
+make -f k8s.mak gw db s1 s2 s3  # start services
 make -f k8s.mak loader
 
 k9s
 
-# Grafana, Kiali ...
-make -f k8s.mak provision
+# Grafana, Kiali
+make -f k8s.mak provision  # it takes about 2mins
 make -f k8s.mak grafana-url
-http://xxx.amazonaws.com:3000/login   User:admin,  Password:prom-operator
+Open the `grafana-url` obtained from the previous step  User: admin,  Password: prom-operator
+Click Browse -> c756 transactions
 
 tools/getip.sh kubectl istio-system svc/istio-ingressgateway  # get cluster ip
-Copy CLUSTER_IP to PROJ_ROOT/gatling-x-y.sh  # run gatling scripts on the host machine
-# those gatling scripts must be placed under the PROJ_ROOT
-tools/kill-gatling.sh  # close all gatling instances
+./gatling-set-ip.sh "xxx.amazonaws.com"  # it applies cluster ip obtained from the previous step to all gatling-x-y.sh
+# now move to host machine, and run gatling scripts on the host machine
+bash gatling-x-y.sh  # for Apple M1 machines, it does not work, https://coursys.sfu.ca/2022sp-cmpt-756-g1/forum/922
+# btw, those gatling scripts must be placed under the PROJ_ROOT
+tools/kill-gatling.sh  # close all gatling instances on the host machine
+# now back to the container
 
 make -f k8s.mak prometheus-url
-flask_http_request_total{service="cmpt756s1"}  # cmpt756s2, cmpt756s3, cmpt756db
-rate(flask_http_request_total{service="cmpt756db"}[5m])  # last 5 minute
+# see following query patterns
+# flask_http_request_total{service="vancouver-grizzlies-db"}  # also try s1, s2, s3
+# rate(flask_http_request_total{service="vancouver-grizzlies-db"}[5m])  # last 5 minute
 
 make -f k8s.mak kiali-url
-https://scp756-221.github.io/course-site//#/g3-mesh/page?embedded=true&hidegitlink=true
+# see https://scp756-221.github.io/course-site//#/g3-mesh/page?embedded=true&hidegitlink=true
 
-# test via mcli client
+# test via mcli client, do it in another tools/shell.sh
+cd mcli
 kubectl get svc --all-namespaces | cut -c -150
 export EXTERNAL_IP="xxx.amazonaws.com"
-cd mcli
 make build-mcli
 make S2_SERVER=$EXTERNAL_IP S3_SERVER=$EXTERNAL_IP S2_PORT=80 S3_PORT=80 run-mcli
 read 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea

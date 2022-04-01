@@ -1,10 +1,10 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: cmpt756db
+  name: vancouver-grizzlies-db
 spec:
   hosts:
-  - cmpt756db
+  - vancouver-grizzlies-db
   http:
   - match:
     - uri:
@@ -13,7 +13,7 @@ spec:
       uri: /api/v1/datastore
     route:
     - destination:
-        host: cmpt756db
+        host: vancouver-grizzlies-db
         port:
           number: 30002
     fault:

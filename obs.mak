@@ -74,7 +74,7 @@ promport:
 extern: showcontext
 	$(KC) -n $(ISTIO_NS) get svc istio-ingressgateway
 
-# show deploy and pods in current ns; svc of cmpt756 ns
+# show deploy and pods in current ns; svc of c756ns
 ls: showcontext
 	$(KC) get gw,deployments,pods
 	$(KC) -n $(APP_NS) get svc

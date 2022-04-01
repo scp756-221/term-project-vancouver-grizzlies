@@ -15,27 +15,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s2-v1
+  name: vancouver-grizzlies-s2-v1
   labels:
-    app: cmpt756s2
+    app: vancouver-grizzlies-s2
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s2
+      app: vancouver-grizzlies-s2
       version: v1
   template:
     metadata:
       name: service2-pod
       labels:
-        app: cmpt756s2
+        app: vancouver-grizzlies-s2
         version: v1
     spec:
       serviceAccountName: svc-s2
       containers:
-      - name: cmpt756s2
-        image: 'ghcr.io/mogami95/cmpt756s2:v1'
+      - name: vancouver-grizzlies-s2
+        image: 'ghcr.io/scp756-221/vancouver-grizzlies-s2:v1'
         imagePullPolicy: Always
         env:
           - name: EXER
