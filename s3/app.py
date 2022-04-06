@@ -121,7 +121,7 @@ def update_playlist():
     response = requests.put(
         url,
         params=payload,
-        json={"objtype": "playlist", "PlayListName": PlayListName},
+        json={"PlayListName": PlayListName},
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 

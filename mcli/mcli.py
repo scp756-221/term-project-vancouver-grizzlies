@@ -252,48 +252,48 @@ Enter 'help' for command list.
                 i['PlayListName'],
                 i['Content']))
 
-        def do_updateplaylist(self, arg):
-            """
-            Update the name of a playlist.
+    def do_updateplaylist(self, arg):
+        """
+        Update the name of a playlist.
 
-            Parameters
-            ----------
-            playlist_id: int
-                The playlist_id of the playlist to update.
-            PlayListName: PlayListName
-                The new name of the target song.
-            """
-            url = get_playlist_url(self.playlist_server, self.playlist_port)
-            args = parse_quoted_strings(arg)
-            payload = {
-                'playlist_id': args[0],
-                'PlayListName': args[1]
-            }
-            r = requests.put(
-                url,
-                json=payload,
-                headers={'Authorization': DEFAULT_AUTH}
-            )
-            print(r.json())
-            if r.status_code != 200:
-                print("Non-successful status code:", r.status_code)
+        Parameters
+        ----------
+        playlist_id: string
+            The playlist_id of the playlist to update, in quotation marks.
+        PlayListName: PlayListName
+            The new name of the target playlist.
+        """
+        url = get_playlist_url(self.playlist_server, self.playlist_port)
+        args = parse_quoted_strings(arg)
+        payload = {
+            'playlist_id': args[0],
+            'PlayListName': args[1]
+        }
+        r = requests.put(
+            url,
+            json=payload,
+            headers={'Authorization': DEFAULT_AUTH}
+        )
+        print(r.json())
+        if r.status_code != 200:
+            print("Non-successful status code:", r.status_code)
 
-        def do_deleteplaylist(self, arg):
-            """
-            Delete a playlist.
+    def do_deleteplaylist(self, arg):
+        """
+        Delete a playlist.
 
-            Parameters
-            ----------
-            playlist_id: int
-                The playlist_id of the playlist to delete.
-            """
-            url = get_playlist_url(self.playlist_server, self.playlist_port)
-            r = requests.delete(
-                url+arg.strip(),
-                headers={'Authorization': DEFAULT_AUTH}
-                )
-            if r.status_code != 200:
-                print("Non-successful status code:", r.status_code)
+        Parameters
+        ----------
+        playlist_id: int
+            The playlist_id of the playlist to delete.
+        """
+        url = get_playlist_url(self.playlist_server, self.playlist_port)
+        r = requests.delete(
+            url+arg.strip(),
+            headers={'Authorization': DEFAULT_AUTH}
+        )
+        if r.status_code != 200:
+            print("Non-successful status code:", r.status_code)
 
 if __name__ == '__main__':
     args = parse_args()
