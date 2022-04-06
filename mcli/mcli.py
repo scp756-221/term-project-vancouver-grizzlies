@@ -207,14 +207,18 @@ Enter 'help' for command list.
         ----------
         PlayListName: string
             The name of the new playlist.
-        Content: array
+        Content: string
             A List of music strings.
+
+        Example
+        ----------
+        createplaylist TEMP Song1_Song2
         """
         url = get_playlist_url(self.playlist_server, self.playlist_port)
         args = parse_quoted_strings(arg)
         payload = {
             'PlayListName': args[0],
-            'Content': [x for x in args[1:]],
+            'Content': args[1],
         }
         r = requests.post(
             url,
@@ -233,6 +237,10 @@ Enter 'help' for command list.
         ----------
         playlist_id: int
             The playlist_id of the playlist to read.
+
+        Example
+        ----------
+        readplaylist 49206bf0-ad4e-11ec-b909-0242ac120002
         """
         url = get_playlist_url(self.playlist_server, self.playlist_port)
         r = requests.get(
@@ -258,10 +266,14 @@ Enter 'help' for command list.
 
         Parameters
         ----------
-        playlist_id: string
+        playlist_id: int (uuid)
             The playlist_id of the playlist to update, in quotation marks.
-        PlayListName: PlayListName
+        PlayListName: string
             The new name of the target playlist.
+
+        Example
+        ----------
+        updateplaylist "8cca5ccb-44cb-4bdd-9a09-5ef082e397e5" TMP2
         """
         url = get_playlist_url(self.playlist_server, self.playlist_port)
         args = parse_quoted_strings(arg)
@@ -286,6 +298,10 @@ Enter 'help' for command list.
         ----------
         playlist_id: int
             The playlist_id of the playlist to delete.
+
+        Example
+        ----------
+        deleteplaylist 8cca5ccb-44cb-4bdd-9a09-5ef082e397e5
         """
         url = get_playlist_url(self.playlist_server, self.playlist_port)
         r = requests.delete(
