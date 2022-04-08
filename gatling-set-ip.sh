@@ -8,6 +8,14 @@ sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-10-music.sh
 sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-10-playlist.sh
 sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-10-user.sh
 
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-50-music.sh
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-50-playlist.sh
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-50-user.sh
+
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-100-music.sh
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-100-playlist.sh
+sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-100-user.sh
+
 sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-1000-music.sh
 sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-1000-playlist.sh
 sed -i "s/CLUSTER_IP=.*/CLUSTER_IP=$1 \\\/g" gatling-1000-user.sh
